@@ -3,3 +3,6 @@
 
 ### CodeClimate
 [![Maintainability](https://api.codeclimate.com/v1/badges/df6b7f526bfa42aba8ff/maintainability)](https://codeclimate.com/github/mamilla11/python-project-lvl2/maintainability)
+
+### Python CI
+[![Python CI](https://github.com/mamilla11/python-project-lvl2/actions/workflows/pythonci.yml/badge.svg)](https://github.com/mamilla11/python-project-lvl2/actions/workflows/pythonci.yml)
