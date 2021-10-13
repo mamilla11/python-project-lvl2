@@ -20,4 +20,4 @@ test-coverage:
 	poetry run pytest --cov=gendiff --cov-report html
 
 diff:
-	poetry run gendiff --help
+	poetry run gendiff fixtures/file1.json fixtures/file2.json
