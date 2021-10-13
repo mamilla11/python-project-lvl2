@@ -6,7 +6,7 @@ def generate_diff(file1, file2):
     old = json.load(open(file1))
     new = json.load(open(file2))
     
-    keys = set(list(old.keys()) + list(new.keys()))
+    keys = sorted(set(list(old.keys()) + list(new.keys())))
     diff = []
     for key in keys:
         if key in new and key not in old:
