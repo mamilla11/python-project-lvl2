@@ -1,12 +1,26 @@
 import argparse
 import json
+import yaml
+import os
 
 
-def generate_diff(file1, file2):
-    old = json.load(open(file1))
-    new = json.load(open(file2))
+def load_files(file1, file2):
+    _, extension = os.path.splitext(file1)
 
-    keys = sorted(set(list(old.keys()) + list(new.keys())))
+    if extension == '.json':
+        return (
+            json.load(open(file1)),
+            json.load(open(file2))
+        )
+
+    if extension in ['.yml', '.yaml']:
+        return (
+            yaml.safe_load(open(file1)),
+            yaml.safe_load(open(file2))
+        )
+
+
+def parse(old, new, keys):
     diff = []
     for key in keys:
         if key in new and key not in old:
@@ -19,8 +33,16 @@ def generate_diff(file1, file2):
             else:
                 diff.append(f'- {key}: {old[key]}')
                 diff.append(f'+ {key}: {new[key]}')
+    return diff
 
-    return '{\n  ' + '\n  '.join(diff) + '\n}'
+
+def generate_diff(file1, file2):
+    old, new = load_files(file1, file2)
+
+    keys = sorted(set(list(old.keys()) + list(new.keys())))
+    diff = parse(old, new, keys)
+
+    return ('{\n  ' + '\n  '.join(diff) + '\n}').lower()
 
 
 def main():
