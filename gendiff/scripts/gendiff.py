@@ -20,29 +20,61 @@ def load_files(file1, file2):
         )
 
 
-def parse(old, new, keys):
-    diff = []
-    for key in keys:
-        if key in new and key not in old:
-            diff.append(f'+ {key}: {new[key]}')
-        elif key in old and key not in new:
-            diff.append(f'- {key}: {old[key]}')
-        else:
-            if old[key] == new[key]:
-                diff.append(f'  {key}: {new[key]}')
+def stylish(items):
+    def inner(items, ident, diffstr):
+        diffstr += '{\n'
+
+        for key in items:
+            diffstr += ' ' * (ident + 1)
+            if isinstance(items[key], dict):
+                diffstr += f'{key}: '
+                diffstr += inner(items[key], ident + 2, '')
             else:
-                diff.append(f'- {key}: {old[key]}')
-                diff.append(f'+ {key}: {new[key]}')
-    return diff
+                for val in items[key]:
+                    diffstr += f'{val[0]} {key}: {val[1]}\n'
+        diffstr += ' ' * (ident) + '}\n'
+        return diffstr
+
+    return inner(items, 0, '')
 
 
-def generate_diff(file1, file2):
-    old, new = load_files(file1, file2)
+def get_status(old, new, key):
+    if key in new and key not in old:
+        return 'added'
 
+    if key in old and key not in new:
+        return 'deleted'
+
+    if isinstance(old[key], dict) and isinstance(new[key], dict):
+        return 'nested'
+
+    if old[key] != new[key]:
+        return 'changed'
+
+    return 'unchanged'
+
+
+def get_diff(old, new, key):
+    status = get_status(old, new, key)
+
+    if status == 'added':
+        return [(key, '+', new[key])]
+
+    if status == 'deleted':
+        return [(key, '-', old[key])]
+
+    if status == 'nested':
+        return [(key, ' ', generate_diff(old[key], new[key]))]
+
+    if status == 'changed':
+        return [(key, '-', old[key]), (key, '+', new[key])]
+
+    return [(key, ' ', new[key])]
+
+
+def generate_diff(old, new):
     keys = sorted(set(list(old.keys()) + list(new.keys())))
-    diff = parse(old, new, keys)
-
-    return ('{\n  ' + '\n  '.join(diff) + '\n}').lower()
+    return [get_diff(old, new, key) for key in keys]
 
 
 def main():
@@ -52,8 +84,11 @@ def main():
     parser.add_argument('-f', '--format', help='set format of output')
 
     args = parser.parse_args()
-    diff = generate_diff(args.first_file, args.second_file)
-    print(diff)
+    old, new = load_files(args.first_file, args.second_file)
+    diff = generate_diff(old, new)
+
+    for i in diff:
+        print(i)
 
 
 if __name__ == '__main__':
