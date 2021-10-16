@@ -14,7 +14,7 @@ def get_status(old, new, key):
     return 'unchanged'
 
 
-def get_diff(old, new, key, diff):
+def process(old, new, key, diff):
     status = get_status(old, new, key)
 
     if status == 'added':
@@ -24,7 +24,7 @@ def get_diff(old, new, key, diff):
         diff[key] = (status, old[key])
 
     elif status == 'nested':
-        diff[key] = (status, generate_diff(old[key], new[key]))
+        diff[key] = (status, differ(old[key], new[key]))
 
     elif status == 'updated':
         diff[key] = (status, old[key], new[key])
@@ -35,9 +35,9 @@ def get_diff(old, new, key, diff):
     return diff
 
 
-def generate_diff(old, new):
+def differ(old, new):
     keys = sorted(set(list(old.keys()) + list(new.keys())))
     diff = {}
     for key in keys:
-        get_diff(old, new, key, diff)
+        process(old, new, key, diff)
     return diff
