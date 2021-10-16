@@ -42,10 +42,9 @@ def stylish(diff, depth=0):
     result = []
     indent = '    ' * depth
 
-    if isinstance(diff, dict):
-        for key, val in diff.items():
-            status, data = get_chunk(val)
-            content = render(data, depth)
-            process(key, content, status, result, val, indent, depth)
+    for key, val in diff.items():
+        status, data = get_chunk(val)
+        content = render(data, depth)
+        process(key, content, status, result, val, indent, depth)
 
-        return '{\n' + '\n'.join(result) + '\n{}}}'.format(indent)
+    return '{\n' + '\n'.join(result) + '\n{}}}'.format(indent)

@@ -2,5 +2,4 @@ import json
 
 
 def tojson(diff):
-    if isinstance(diff, dict):
-        return json.dumps(diff, indent=4)
+    return json.dumps(diff, indent=4)

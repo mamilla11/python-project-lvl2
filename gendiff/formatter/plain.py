@@ -13,6 +13,7 @@ def convert(value):
         return str(value).lower()
     if value is None:
         return 'null'
+    return value
 
 
 def added(path, status, content):
@@ -45,14 +46,13 @@ def process(path, status, result, data):
 
 
 def render(diff, path=[], result=[]):
-    if isinstance(diff, dict):
-        for key, val in diff.items():
-            status = get_status(val)
-            path.append(key)
-            process(path, status, result, val)
-            path.pop()
+    for key, val in diff.items():
+        status = get_status(val)
+        path.append(key)
+        process(path, status, result, val)
+        path.pop()
 
-        return '\n'.join(result)
+    return '\n'.join(result)
 
 
 def plain(diff):

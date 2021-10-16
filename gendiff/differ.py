@@ -1,3 +1,4 @@
+from gendiff.loader import load_files
 from gendiff.formatter.plain import plain
 from gendiff.formatter.tojson import tojson
 from gendiff.formatter.stylish import stylish
@@ -50,14 +51,14 @@ def process(old, new, key, diff):
 
 
 def differ(old, new):
-    if isinstance(old, dict) and isinstance(new, dict):
-        keys = sorted(set(list(old.keys()) + list(new.keys())))
-        diff = {}
-        for key in keys:
-            process(old, new, key, diff)
-        return diff
+    keys = sorted(set(list(old.keys()) + list(new.keys())))
+    diff = {}
+    for key in keys:
+        process(old, new, key, diff)
+    return diff
 
 
-def generate_diff(old, new, format='stylish'):
+def generate_diff(filepath1, filepath2, format='stylish'):
+    old, new = load_files(filepath1, filepath2)
     diff = differ(old, new)
     return formatter(diff, format)

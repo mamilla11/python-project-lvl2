@@ -13,18 +13,6 @@ def get_path(filename):
     return os.path.join('tests/fixtures', filename)
 
 
-def load_json_files(filepath1, filepath2):
-    file1 = json.load(open(filepath1))
-    file2 = json.load(open(filepath2))
-    return file1, file2
-
-
-def load_yaml_files(filepath1, filepath2):
-    file1 = yaml.safe_load(open(filepath1))
-    file2 = yaml.safe_load(open(filepath2))
-    return file1, file2
-
-
 @pytest.fixture(scope="module", autouse=True)
 def stylish_diff_plain():
     with open(get_path('stylish_diff_plain.txt')) as f:
@@ -57,28 +45,28 @@ def json_diff_nested():
 def plain_json():
     filepath1 = get_path('before_plain.json')
     filepath2 = get_path('after_plain.json')
-    return load_json_files(filepath1, filepath2)
+    return filepath1, filepath2
 
 
 @pytest.fixture(scope="module", autouse=True)
 def plain_yaml():
     filepath1 = get_path('before_plain.yml')
     filepath2 = get_path('after_plain.yml')
-    return load_yaml_files(filepath1, filepath2)
+    return filepath1, filepath2
 
 
 @pytest.fixture(scope="module", autouse=True)
 def nested_json():
     filepath1 = get_path('before_nested.json')
     filepath2 = get_path('after_nested.json')
-    return load_json_files(filepath1, filepath2)
+    return filepath1, filepath2
 
 
 @pytest.fixture(scope="module", autouse=True)
 def nested_yaml():
     filepath1 = get_path('before_nested.yml')
     filepath2 = get_path('after_nested.yml')
-    return load_yaml_files(filepath1, filepath2)
+    return filepath1, filepath2
 
 
 def test_stylish_diff_plain_json(plain_json, stylish_diff_plain):
