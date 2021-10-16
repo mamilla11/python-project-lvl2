@@ -23,10 +23,13 @@ def load_files(file1, file2):
 
 
 def get_chunk(diff_value):
-    index = 0
-    while True:
-        yield diff_value[index]
-        index += 1
+    if isinstance(diff_value, tuple):
+        return diff_value[:2]
+    return None, diff_value
+
+
+def get_rest(diff_value):
+    return diff_value[2]
 
 
 def convert(value):
@@ -37,7 +40,7 @@ def convert(value):
     return value
 
 
-def render_content(content, depth):
+def render(content, depth):
     if isinstance(content, dict):
         return stylish(content, depth + 1)
     return convert(content)
@@ -48,15 +51,11 @@ def stylish(diff, depth=0):
     indent = '    ' * depth
 
     for key, val in diff.items():
-        chunk = get_chunk(val)
-        status, data = None, val
-        if isinstance(val, tuple):
-            status, data = next(chunk), next(chunk)
-
-        content = render_content(data, depth)
+        status, data = get_chunk(val)
+        content = render(data, depth)
 
         if status == 'changed':
-            new_content = render_content(next(chunk), depth + 1)
+            new_content = render(get_rest(val), depth + 1)
             result.append('{} - {}: {}'.format(indent, key, content))
             result.append('{} + {}: {}'.format(indent, key, new_content))
 

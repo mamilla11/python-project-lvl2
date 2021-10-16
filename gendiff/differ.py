@@ -1,22 +1,17 @@
 def get_status(old, new, key):
-    status = ''
-
     if key in new and key not in old:
-        status = 'added'
+        return 'added'
 
-    elif key in old and key not in new:
-        status = 'deleted'
+    if key in old and key not in new:
+        return 'deleted'
 
-    elif isinstance(old[key], dict) and isinstance(new[key], dict):
-        status = 'nested'
+    if isinstance(old[key], dict) and isinstance(new[key], dict):
+        return 'nested'
 
-    elif old[key] != new[key]:
-        status = 'changed'
+    if old[key] != new[key]:
+        return 'changed'
 
-    else:
-        status = 'unchanged'
-
-    return status
+    return 'unchanged'
 
 
 def get_diff(old, new, key, diff):
