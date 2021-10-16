@@ -24,7 +24,7 @@ def render(content, depth):
 
 def process(key, content, status, result, data, indent, depth):
     if status == 'updated':
-        new_content = render(data[2], depth + 1)
+        new_content = render(data[2], depth)
         result.append('{}  - {}: {}'.format(indent, key, content))
         result.append('{}  + {}: {}'.format(indent, key, new_content))
 
