@@ -56,4 +56,4 @@ def render(diff, path=[], result=[]):
 
 
 def plain(diff):
-    return render(diff)
+    return render(diff, [], [])

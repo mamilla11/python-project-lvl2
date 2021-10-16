@@ -116,6 +116,13 @@ def test_plain_diff_nested_json(nested_json, plain_diff_nested):
     assert diff == plain_diff_nested
 
 
+def test_plain_diff_nested_yaml(nested_yaml, plain_diff_nested):
+    file1, file2 = nested_yaml
+
+    diff = generate_diff(file1, file2, 'plain')
+    assert diff == plain_diff_nested
+
+
 def test_json_diff_nested_yaml(nested_yaml, json_diff_nested):
     file1, file2 = nested_yaml
 
