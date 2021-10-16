@@ -19,28 +19,30 @@ def get_status(old, new, key):
     return status
 
 
-def get_diff(old, new, key):
+def get_diff(old, new, key, diff):
     status = get_status(old, new, key)
-    result = []
 
     if status == 'added':
-        result = [(key, '+', new[key])]
+        diff[key] = (status, new[key])
 
     elif status == 'deleted':
-        result = [(key, '-', old[key])]
+        diff[key] = (status, old[key])
 
     elif status == 'nested':
-        result = [(key, ' ', generate_diff(old[key], new[key]))]
+        diff[key] = (status, generate_diff(old[key], new[key]))
 
     elif status == 'changed':
-        result = [(key, '-', old[key]), (key, '+', new[key])]
+        diff[key] = (status, old[key], new[key])
 
     else:
-        result = [(key, ' ', new[key])]
+        diff[key] = (status, new[key])
 
-    return result
+    return diff
 
 
 def generate_diff(old, new):
     keys = sorted(set(list(old.keys()) + list(new.keys())))
-    return [get_diff(old, new, key) for key in keys]
+    diff = {}
+    for key in keys:
+        get_diff(old, new, key, diff)
+    return diff
