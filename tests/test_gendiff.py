@@ -1,12 +1,6 @@
 import os
-import json
-import yaml
 import pytest
-
 from gendiff.differ import generate_diff
-from gendiff.formatter.stylish import stylish
-from gendiff.formatter.plain import plain
-from gendiff.formatter.tojson import tojson
 
 
 def get_path(filename):
@@ -134,4 +128,4 @@ def test_unknown_diff_nested_json(nested_json):
     file1, file2 = nested_json
 
     diff = generate_diff(file1, file2, 'yaml')
-    assert diff == None
+    assert diff is None
