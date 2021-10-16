@@ -6,6 +6,7 @@ import os
 from gendiff.differ import generate_diff
 from gendiff.formatter.stylish import stylish
 from gendiff.formatter.plain import plain
+from gendiff.formatter.tojson import tojson
 
 
 def load_files(file1, file2):
@@ -36,6 +37,8 @@ def main():
 
     if args.format == 'plain':
         print(plain(diff))
+    elif args.format == 'json':
+        print(tojson(diff))
     else:
         print(stylish(diff))
 

@@ -6,6 +6,7 @@ import pytest
 from gendiff.differ import generate_diff
 from gendiff.formatter.stylish import stylish
 from gendiff.formatter.plain import plain
+from gendiff.formatter.tojson import tojson
 
 
 def get_path(filename):
@@ -29,6 +30,13 @@ def expected_nested():
 @pytest.fixture
 def plain_format():
     with open(get_path('result_plain_format.txt')) as f:
+        expected = f.read()
+    return expected
+
+
+@pytest.fixture
+def json_format():
+    with open(get_path('result_json_format.txt')) as f:
         expected = f.read()
     return expected
 
@@ -98,3 +106,14 @@ def test_plain_format(plain_format):
 
     diff = generate_diff(file1, file2)
     assert plain(diff) == plain_format
+
+
+def test_json_format(json_format):
+    filepath1 = get_path('nested1.yml')
+    filepath2 = get_path('nested2.yml')
+
+    file1 = yaml.safe_load(open(filepath1))
+    file2 = yaml.safe_load(open(filepath2))
+
+    diff = generate_diff(file1, file2)
+    assert tojson(diff) == json_format
