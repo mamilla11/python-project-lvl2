@@ -30,7 +30,7 @@ def stylish(diff, depth=0):
         status, data = get_chunk(val)
         content = render(data, depth)
 
-        if status == 'changed':
+        if status == 'updated':
             new_content = render(get_rest(val), depth + 1)
             result.append('{} - {}: {}'.format(indent, key, content))
             result.append('{} + {}: {}'.format(indent, key, new_content))
@@ -38,7 +38,7 @@ def stylish(diff, depth=0):
         elif status == 'added':
             result.append('{} + {}: {}'.format(indent, key, content))
 
-        elif status == 'deleted':
+        elif status == 'removed':
             result.append('{} - {}: {}'.format(indent, key, content))
 
         else:

@@ -3,13 +3,13 @@ def get_status(old, new, key):
         return 'added'
 
     if key in old and key not in new:
-        return 'deleted'
+        return 'removed'
 
     if isinstance(old[key], dict) and isinstance(new[key], dict):
         return 'nested'
 
     if old[key] != new[key]:
-        return 'changed'
+        return 'updated'
 
     return 'unchanged'
 
@@ -20,13 +20,13 @@ def get_diff(old, new, key, diff):
     if status == 'added':
         diff[key] = (status, new[key])
 
-    elif status == 'deleted':
+    elif status == 'removed':
         diff[key] = (status, old[key])
 
     elif status == 'nested':
         diff[key] = (status, generate_diff(old[key], new[key]))
 
-    elif status == 'changed':
+    elif status == 'updated':
         diff[key] = (status, old[key], new[key])
 
     else:

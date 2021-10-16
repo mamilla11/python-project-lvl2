@@ -5,6 +5,7 @@ import os
 
 from gendiff.differ import generate_diff
 from gendiff.stylish import stylish
+from gendiff.plain import plain
 
 
 def load_files(file1, file2):
@@ -32,7 +33,7 @@ def main():
     args = parser.parse_args()
     old, new = load_files(args.first_file, args.second_file)
     diff = generate_diff(old, new)
-    print(stylish(diff))
+    print(plain(diff))
 
 
 if __name__ == '__main__':
