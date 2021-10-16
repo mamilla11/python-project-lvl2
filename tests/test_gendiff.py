@@ -4,8 +4,8 @@ import yaml
 import pytest
 
 from gendiff.differ import generate_diff
-from gendiff.stylish import stylish
-from gendiff.plain import plain
+from gendiff.formatter.stylish import stylish
+from gendiff.formatter.plain import plain
 
 
 def get_path(filename):
