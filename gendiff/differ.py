@@ -4,11 +4,12 @@ from gendiff.formatter.stylish import stylish
 
 
 def formatter(diff, format):
+    if format == 'stylish' or format is None:
+        return stylish(diff)
     if format == 'plain':
         return plain(diff)
     if format == 'json':
         return tojson(diff)
-    return stylish(diff)
 
 
 def get_status(old, new, key):
@@ -57,6 +58,6 @@ def differ(old, new):
         return diff
 
 
-def generate_diff(old, new, format=None):
+def generate_diff(old, new, format='stylish'):
     diff = differ(old, new)
     return formatter(diff, format)
