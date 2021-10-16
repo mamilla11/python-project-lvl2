@@ -45,13 +45,14 @@ def process(path, status, result, data):
 
 
 def render(diff, path=[], result=[]):
-    for key, val in diff.items():
-        status = get_status(val)
-        path.append(key)
-        process(path, status, result, val)
-        path.pop()
+    if isinstance(diff, dict):
+        for key, val in diff.items():
+            status = get_status(val)
+            path.append(key)
+            process(path, status, result, val)
+            path.pop()
 
-    return '\n'.join(result)
+        return '\n'.join(result)
 
 
 def plain(diff):
