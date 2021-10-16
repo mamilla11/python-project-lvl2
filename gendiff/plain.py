@@ -33,21 +33,24 @@ def updated(path, status, old, new):
     )
 
 
+def process(path, status, result, data):
+    if status == 'nested':
+        render(data[1], path, result)
+    if status == 'added':
+        result.append(added('.'.join(path), status, data[1]))
+    if status == 'removed':
+        result.append(removed('.'.join(path), status))
+    if status == 'updated':
+        result.append(updated('.'.join(path), status, data[1], data[2]))
+
+
 def render(diff, path=[], result=[]):
     for key, val in diff.items():
         status = get_status(val)
         path.append(key)
-
-        if status == 'nested':
-            render(val[1], path, result)
-        elif status == 'added':
-            result.append(added('.'.join(path), status, val[1]))
-        elif status == 'removed':
-            result.append(removed('.'.join(path), status))
-        elif status == 'updated':
-            result.append(updated('.'.join(path), status, val[1], val[2]))
-
+        process(path, status, result, val)
         path.pop()
+
     return '\n'.join(result)
 
 
