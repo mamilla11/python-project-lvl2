@@ -20,7 +20,7 @@ test-coverage:
 	poetry run pytest --cov=gendiff --cov-report xml
 
 diff:
-	poetry run gendiff tests/fixtures/before_nested.yml tests/fixtures/after_nested.yml
+	poetry run gendiff tests/fixtures/before_nested.json tests/fixtures/after_nested.json --format=plain
 
 diff_plain:
 	poetry run gendiff tests/fixtures/before_plain.json tests/fixtures/after_plain.json
