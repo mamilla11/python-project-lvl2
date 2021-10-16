@@ -1,3 +1,16 @@
+from gendiff.formatter.plain import plain
+from gendiff.formatter.tojson import tojson
+from gendiff.formatter.stylish import stylish
+
+
+def formatter(diff, format):
+    if format == 'plain':
+        return plain(diff)
+    if format == 'json':
+        return tojson(diff)
+    return stylish(diff)
+
+
 def get_status(old, new, key):
     if key in new and key not in old:
         return 'added'
@@ -41,3 +54,8 @@ def differ(old, new):
     for key in keys:
         process(old, new, key, diff)
     return diff
+
+
+def generate_diff(old, new, format=None):
+    diff = differ(old, new)
+    return formatter(diff, format)
