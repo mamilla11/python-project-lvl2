@@ -49,11 +49,12 @@ def process(old, new, key, diff):
 
 
 def differ(old, new):
-    keys = sorted(set(list(old.keys()) + list(new.keys())))
-    diff = {}
-    for key in keys:
-        process(old, new, key, diff)
-    return diff
+    if isinstance(old, dict) and isinstance(new, dict):
+        keys = sorted(set(list(old.keys()) + list(new.keys())))
+        diff = {}
+        for key in keys:
+            process(old, new, key, diff)
+        return diff
 
 
 def generate_diff(old, new, format=None):
