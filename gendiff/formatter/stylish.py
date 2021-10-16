@@ -48,4 +48,5 @@ def stylish(diff, depth=0):
             content = render(data, depth)
             process(key, content, status, result, val, indent, depth)
 
-        return '{\n' + '\n'.join(result) + '\n{}}}'.format(indent)
+        return ('{\n' + '\n'.join(result) + '\n{}}}'.format(
+            indent)).replace('\n\n', '\n')
