@@ -25,17 +25,17 @@ def render(content, depth):
 def process(key, content, status, result, data, indent, depth):
     if status == 'updated':
         new_content = render(data[2], depth + 1)
-        result.append('{} - {}: {}'.format(indent, key, content))
-        result.append('{} + {}: {}'.format(indent, key, new_content))
+        result.append('{}  - {}: {}'.format(indent, key, content))
+        result.append('{}  + {}: {}'.format(indent, key, new_content))
 
     elif status == 'added':
-        result.append('{} + {}: {}'.format(indent, key, content))
+        result.append('{}  + {}: {}'.format(indent, key, content))
 
     elif status == 'removed':
-        result.append('{} - {}: {}'.format(indent, key, content))
+        result.append('{}  - {}: {}'.format(indent, key, content))
 
     else:
-        result.append('{}   {}: {}'.format(indent, key, content))
+        result.append('{}    {}: {}'.format(indent, key, content))
 
 
 def stylish(diff, depth=0):
