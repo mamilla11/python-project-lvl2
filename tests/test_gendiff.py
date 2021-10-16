@@ -3,7 +3,7 @@ import json
 import yaml
 import pytest
 
-from gendiff.scripts.gendiff import stylish
+from gendiff.stylish import stylish
 from gendiff.differ import generate_diff
 
 
