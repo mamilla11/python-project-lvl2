@@ -22,6 +22,22 @@ def render(content, depth):
     return convert(content)
 
 
+def process(key, content, status, result, data, indent, depth):
+    if status == 'updated':
+        new_content = render(data[2], depth + 1)
+        result.append('{} - {}: {}'.format(indent, key, content))
+        result.append('{} + {}: {}'.format(indent, key, new_content))
+
+    elif status == 'added':
+        result.append('{} + {}: {}'.format(indent, key, content))
+
+    elif status == 'removed':
+        result.append('{} - {}: {}'.format(indent, key, content))
+
+    else:
+        result.append('{}   {}: {}'.format(indent, key, content))
+
+
 def stylish(diff, depth=0):
     result = []
     indent = '    ' * depth
@@ -29,19 +45,6 @@ def stylish(diff, depth=0):
     for key, val in diff.items():
         status, data = get_chunk(val)
         content = render(data, depth)
-
-        if status == 'updated':
-            new_content = render(get_rest(val), depth + 1)
-            result.append('{} - {}: {}'.format(indent, key, content))
-            result.append('{} + {}: {}'.format(indent, key, new_content))
-
-        elif status == 'added':
-            result.append('{} + {}: {}'.format(indent, key, content))
-
-        elif status == 'removed':
-            result.append('{} - {}: {}'.format(indent, key, content))
-
-        else:
-            result.append('{}   {}: {}'.format(indent, key, content))
+        process(key, content, status, result, val, indent, depth)
 
     return '{\n' + '\n'.join(result) + '\n{}}}'.format(indent)

@@ -33,6 +33,7 @@ def main():
     args = parser.parse_args()
     old, new = load_files(args.first_file, args.second_file)
     diff = generate_diff(old, new)
+    print(stylish(diff))
     print(plain(diff))
 
 
